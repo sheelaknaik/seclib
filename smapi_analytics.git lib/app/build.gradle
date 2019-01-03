@@ -1,0 +1,53 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.archinamon.aspectj-ext'
+
+android {
+    compileSdkVersion 27
+    buildToolsVersion "27.0.3"
+    defaultConfig {
+
+        minSdkVersion 19
+        targetSdkVersion 27
+        versionCode 1
+        versionName "2.7.2"
+        android.libraryVariants.all { variant ->
+            def appName="Seclib"
+            variant.outputs.each { output ->
+                def newApkName = "${appName}-${output.baseName}-${versionName}.aar"
+                output.outputFileName = new File("release", newApkName)
+            }  
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+ext.supportLibraryVersion="27.1.1"
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation "com.android.support:appcompat-v7:$supportLibraryVersion"
+
+    implementation "com.android.support:design:$supportLibraryVersion"
+
+    //JobIntentService
+    implementation "com.android.support:support-compat:$supportLibraryVersion"
+
+    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
+    implementation 'com.squareup.okhttp:okhttp:2.5.0'
+    implementation 'com.google.code.gson:gson:2.8.2'
+
+    implementation "android.arch.lifecycle:runtime:1.1.1"
+    implementation "android.arch.lifecycle:extensions:1.1.1"
+    annotationProcessor "android.arch.lifecycle:compiler:1.1.1"
+
+    implementation 'com.google.firebase:firebase-messaging:10.2.1'
+
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
+}
